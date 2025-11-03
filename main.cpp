@@ -7,7 +7,8 @@ class enemies
     std::string descriere, nume, fac;
     public:
     enemies()=default;
-    std::string afis()
+    [[nodiscard]] std::string afis() const
+
     {
         return nume;
     }
@@ -44,7 +45,7 @@ class player
     std::string descriere, nume;
     public:
     player ()=default;
-    std::string afis()
+    [[nodiscard]] std::string afis() const
     {
         return nume;
     }
@@ -77,7 +78,7 @@ class gun
     std::string descriere, nume;
     public:
     gun()=default;
-    std::string afis()
+    [[nodiscard]] std::string afis() const
     {
         return nume;
     }

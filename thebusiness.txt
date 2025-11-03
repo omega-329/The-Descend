@@ -1,0 +1,24 @@
+Streetsweep
+A shotgun that shoots 8 rounds that are deadly in close quarters fights. It is the choice of many people who want to be up close and personal.
+20
+8
+Wasp
+A fully automatic pistol. As the name suggests it won't clear the big ones, but as a last resort, it can't go wrong.
+10
+1
+Heartseek
+A crossbow that can imbue arrows with 4 different proprieties, we're not on earth after all, which can give you an edge in combat if you know how to use it.
+40
+1
+Whisper
+A set of throwing knives that split when thrown, just mind the drop when going for long kills.
+30
+2
+Bountytaker
+<REDACTED> favorite gun, it followed HIM here, impossible.
+50
+1
+Headcleaver
+HIMHIMHIMHIMHIMHIMHIMHIMHIMHIMMURDERERHIMHIMHIMHIMHIMHIMHIMHIMHIMHIM
+100
+1

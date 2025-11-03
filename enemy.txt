@@ -1,0 +1,50 @@
+Vessel
+Humanoid
+The lowest of the low. All they can do is wonder and listen to orders.
+20
+5
+Necromancer
+Humanoid
+The one responsible for keeping the horde in check. In combat it can summon Vessels. Kill first.
+70
+20
+Soldiers
+Humanoid
+Vessels that have potential are turned into soldiers, their only purpose is to defend and terminate the ones that the higher beings consider a threat.
+50
+15
+Bloated
+Humanoid
+Those who were gluttonous in the past turn into bloateds, tanky, slow but heavy hitters, mind your surroundings.
+300
+50
+Hound
+Animal
+They are a part of the horde, they help track down those who they think are dangerous, very fast.
+40
+10
+Imp
+Altered
+Not quite a human, not quite an animal, more of a hybrid of both, they come in two variants: with wings and without, straightforward.
+60
+15
+Plagued
+Altered
+A remenant of the past, one character is already familiar with this, beware of the projectiles.
+100
+5
+Amalgam
+Altered
+When a bloated meets a plagued you get this, a hunk of mass able to shoot projectiles.
+500
+20
+Shadow
+???
+GOD FORBID
+999999
+999999
+Contraption
+???
+IT HAUNTS HIM.ESCAPE IS NOT AN OPTION.IT WILL NOT REST.HE MUST DIE.HE MUST DIE.HE MUST DIE.HE MUST DIE.HE MUST DIE.HE MUST DIE.HE MUST DIE.HE MUST DIE.
+3000
+80

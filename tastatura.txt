@@ -1,2 +1,12 @@
-5
-11 22 33 44 55
+enemy
+Imp
+lol
+return
+gun
+Bountytaker
+miez
+return
+chara
+HIM
+return
+end

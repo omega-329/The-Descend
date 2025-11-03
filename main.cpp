@@ -5,8 +5,17 @@ class enemies
 {
     int hp=60, dmg=10;
     std::string descriere, nume, fac;
+    bool unlock=false;
     public:
     enemies()=default;
+    [[nodiscard]] bool checklock() const
+    {
+        return unlock;
+    }
+    void changelock()
+    {
+        unlock=true;
+    }
     [[nodiscard]] std::string afis() const
 
     {
@@ -43,8 +52,17 @@ class player
 {
     int hp=100;
     std::string descriere, nume;
+    bool unlock=false;
     public:
     player ()=default;
+    [[nodiscard]] bool checklock() const
+    {
+        return unlock;
+    }
+    void changelock()
+    {
+        unlock=true;
+    }
     [[nodiscard]] std::string afis() const
     {
         return nume;
@@ -76,8 +94,17 @@ class gun
 {
     int dmg=25, multishot=1;
     std::string descriere, nume;
+    bool unlock=false;
     public:
     gun()=default;
+    [[nodiscard]] bool checklock() const
+    {
+        return unlock;
+    }
+    void changelock()
+    {
+        unlock=true;
+    }
     [[nodiscard]] std::string afis() const
     {
         return nume;
@@ -134,8 +161,7 @@ int main()
     }
     while (cursor != "end")
     {
-        int flag = 0, nrene=7, nrgun=3, nrchr=1;
-        bool chrg[1], eneg[2], gung[2];
+        int flag = 0;
         std::cout<<"Welcome to the informational terminal:"<<std::endl<<"for enemy information type:enemy"<<std::endl<<"for gun information type:gun"<<std::endl<<"for character information type:chara"<<std::endl<<"for termination type:end"<<std::endl;
         std::getline(std::cin, cursor);
         if (cursor == "enemy") flag=1;
@@ -148,7 +174,8 @@ int main()
                 {
                     int ok=0;
                     std::cout<<"The enemies are: ";
-                    for (int i=0 ;i<=nrene; i++)
+                    for (int i=0 ;i<=9; i++)
+                        if (e[i].checklock()==true)
                         std::cout<<e[i].afis()<<", ";
                     std::cout<<std::endl;
                     std::cout<<"To go back type:return"<<std::endl;
@@ -156,16 +183,8 @@ int main()
                     for (int i=0 ;i<=9; i++)
                         if (cursor == e[i].afis())
                         {
-                            if (i==8 && eneg[0]==0)
-                            {
-                                nrene++;
-                                eneg[0]=true;
-                            }
-                            if (i==9 && eneg[1]==0)
-                            {
-                                nrene++;
-                                eneg[1]=true;
-                            }
+                            if (e[i].checklock()==false)
+                                e[i].changelock();
                             std::cout<<e[i];
                             ok=1;
                         }
@@ -179,7 +198,8 @@ int main()
                 {
                     int ok=0;
                     std::cout<<"The guns are: ";
-                    for (int i=0 ;i<=nrgun; i++)
+                    for (int i=0 ;i<=5; i++)
+                        if (g[i].checklock()==true)
                         std::cout<<g[i].afis()<<", ";
                     std::cout<<std::endl;
                     std::cout<<"To go back type:return"<<std::endl;
@@ -187,16 +207,8 @@ int main()
                     for (int i=0 ;i<=5; i++)
                         if (cursor == g[i].afis())
                         {
-                            if (i==4 && gung[0]==0)
-                            {
-                                nrgun++;
-                                gung[0]=true;
-                            }
-                            if (i==5 && gung[1]==0)
-                            {
-                                nrgun++;
-                                gung[1]=true;
-                            }
+                            if (g[i].checklock()==false)
+                                g[i].changelock();
                             std::cout<<g[i];
                             ok=1;
                         }
@@ -210,7 +222,8 @@ int main()
                 {
                     int ok=0;
                     std::cout<<"The characters are: ";
-                    for (int i=0 ;i<=nrchr; i++)
+                    for (int i=0 ;i<=2; i++)
+                        if (p[i].checklock()==true)
                         std::cout<<p[i].afis()<<", ";
                     std::cout<<std::endl;
                     std::cout<<"To go back type:return"<<std::endl;
@@ -218,11 +231,8 @@ int main()
                     for (int i=0 ;i<=2; i++)
                         if (cursor == p[i].afis())
                         {
-                            if (i==2 && chrg[0]==0)
-                            {
-                                nrchr++;
-                                chrg[0]=true;
-                            }
+                            if (p[i].checklock()==false)
+                                p[i].changelock();
                             std::cout<<p[i];
                             ok=1;
                         }

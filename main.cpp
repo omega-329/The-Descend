@@ -16,7 +16,7 @@ class enemies
     {
         unlock=true;
     }
-    [[nodiscard]] std::string afis() const
+    [[nodiscard]] std::string& afis()
 
     {
         return nume;
@@ -59,7 +59,7 @@ class characters
     {
         unlock=true;
     }
-    [[nodiscard]] std::string afis() const
+    [[nodiscard]] std::string& afis()
     {
         return nume;
     }
@@ -100,7 +100,7 @@ class items
     {
         unlock=true;
     }
-    [[nodiscard]] std::string afis() const
+    [[nodiscard]] std::string& afis()
     {
         return nume;
     }

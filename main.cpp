@@ -3,9 +3,9 @@
 #include <limits>
 class enemies
 {
-    int hp=60, dmg=10;
-    std::string descriere, nume, fac;
+    std::string descriere, nume;
     bool unlock=false;
+    int nrlimbs=6;
     public:
     enemies()=default;
     [[nodiscard]] bool checklock() const
@@ -24,37 +24,33 @@ class enemies
     friend std::istream& operator>>(std::istream& in, enemies& e)
     {
         std::getline(in, e.nume);
-        std::getline(in, e.fac);
         std::getline(in, e.descriere);
-        in>>e.hp>>e.dmg;
+        in>>e.nrlimbs;
         in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return in;
     }
     friend std::ostream& operator<<(std::ostream& out,const enemies& e)
     {
         out<<"Name:"<<e.nume<<std::endl;
-        out<<"Faction:"<<e.fac<<std::endl;
-        out<<"Health pool:"<<e.hp<<"      "<<"Damage per hit:"<<e.dmg<<std::endl;
+        out<<"Limb amount:"<<e.nrlimbs<<std::endl;
         out<<e.descriere<<std::endl<<std::endl;
         return out;
     }
-    enemies(int hp, int dmg,const std::string& descriere,const std::string& nume,const std::string& fac)
+    enemies(int nrlimbs,const std::string& descriere,const std::string& nume)
     {
-        this->hp = hp;
-        this->dmg = dmg;
         this->descriere = descriere;
         this->nume = nume;
-        this->fac = fac;
+        this->nrlimbs = nrlimbs;
     }
     ~enemies()=default;
 };
-class player
+class characters
 {
-    int hp=100;
+    int nrlimbs=6;
     std::string descriere, nume;
     bool unlock=false;
     public:
-    player ()=default;
+    characters ()=default;
     [[nodiscard]] bool checklock() const
     {
         return unlock;
@@ -67,36 +63,35 @@ class player
     {
         return nume;
     }
-    friend std::istream& operator>>(std::istream& in, player& p)
+    friend std::istream& operator>>(std::istream& in, characters& p)
     {
         std::getline(in ,p.nume);
         std::getline(in,p.descriere);
-        in>>p.hp;
+        in>>p.nrlimbs;
         in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return in;
     }
-    friend std::ostream& operator<<(std::ostream& out,const player& p)
+    friend std::ostream& operator<<(std::ostream& out,const characters& p)
     {
         out<<"Name:"<<p.nume<<std::endl;
-        out<<"Health pool:"<<p.hp<<std::endl;
+        out<<"Limb amount:"<<p.nrlimbs<<std::endl;
         out<<p.descriere<<std::endl<<std::endl;
         return out;
     }
-    player(int hp,const std::string& descriere,const std::string& nume)
+    characters(int nrlimbs,const std::string& descriere,const std::string& nume)
     {
-        this->hp = hp;
+        this->nrlimbs = nrlimbs;
         this->descriere = descriere;
         this->nume = nume;
     }
-    ~player()=default;
+    ~characters()=default;
 };
-class gun
+class items
 {
-    int dmg=25, multishot=1;
     std::string descriere, nume;
     bool unlock=false;
     public:
-    gun()=default;
+    items()=default;
     [[nodiscard]] bool checklock() const
     {
         return unlock;
@@ -109,37 +104,33 @@ class gun
     {
         return nume;
     }
-    friend std::istream& operator>>(std::istream& in, gun& g)
+    friend std::istream& operator>>(std::istream& in, items& g)
     {
         std::getline(in ,g.nume);
         std::getline(in,g.descriere);
-        in>>g.dmg>>g.multishot;
         in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return in;
     }
-    friend std::ostream& operator<<(std::ostream& out,const gun& g)
+    friend std::ostream& operator<<(std::ostream& out,const items& g)
     {
         out<<"Name:"<<g.nume<<std::endl;
-        out<<"Damage per bullet:"<<g.dmg<<"      Number of bullets per shot:"<<g.multishot<<std::endl;
         out<<g.descriere<<std::endl<<std::endl;
         return out;
     }
-    gun(int dmg, int multishot,const std::string& descriere,const std::string& nume)
+    items(const std::string& descriere,const std::string& nume)
     {
-        this->dmg = dmg;
-        this->multishot = multishot;
         this->descriere = descriere;
         this->nume = nume;
     }
-    ~gun()=default;
+    ~items()=default;
 };
 int main()
 {
     std::ifstream efis("C:/Users/omega/CLionProjects/The-Descend/enemy.txt");
     std::ifstream pfis("C:/Users/omega/CLionProjects/The-Descend/chara.txt");
     std::ifstream gfis("C:/Users/omega/CLionProjects/The-Descend/thebusiness.txt");
-    gun g[8];
-    player p[5];
+    items g[8];
+    characters p[5];
     enemies e[12];
     std::string cursor;
     if (!efis || !pfis || !gfis)
@@ -162,10 +153,10 @@ int main()
     while (cursor != "end")
     {
         int flag = 0;
-        std::cout<<"Welcome to the informational terminal:"<<std::endl<<"for enemy information type:enemy"<<std::endl<<"for gun information type:gun"<<std::endl<<"for character information type:chara"<<std::endl<<"for termination type:end"<<std::endl;
+        std::cout<<"Welcome to the informational terminal:"<<std::endl<<"for enemy information type:enemy"<<std::endl<<"for item information:item"<<std::endl<<"for character information type:chara"<<std::endl<<"for termination type:end"<<std::endl;
         std::getline(std::cin, cursor);
         if (cursor == "enemy") flag=1;
-        if (cursor == "gun") flag=2;
+        if (cursor == "item") flag=2;
         if (cursor == "chara") flag=3;
         switch (flag)
         {
@@ -197,7 +188,7 @@ int main()
                 while (cursor != "return")
                 {
                     int ok=0;
-                    std::cout<<"The guns are: ";
+                    std::cout<<"The items are: ";
                     for (int i=0 ;i<=5; i++)
                         if (g[i].checklock()==true)
                         std::cout<<g[i].afis()<<", ";
@@ -214,7 +205,7 @@ int main()
                         }
                     if (cursor != "return")
                         if (ok==0)
-                            std::cout<<"Invalid gun"<<std::endl<<std::endl;
+                            std::cout<<"Invalid item"<<std::endl<<std::endl;
                 }
                 break;
             case 3:

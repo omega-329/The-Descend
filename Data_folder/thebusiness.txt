@@ -1,0 +1,10 @@
+weapon, 80, 45,  For those who want up close and personal, Streetsweep
+weapon, 100, 20, Good for removing heads, HeadCleaver
+weapon, 200, 99, KILL_EM_ALL, KILLJOY
+weapon, 60, 20, A dagger for those who enjoy certainty, Spinarete
+flask, 0, 33, 0, RedFlask, A strange red liquid that when drank it give vitality to the user
+flask, -100, 0, 0, BrownVial, A flask that contains a highly volatile liquid can remove limbs.
+armor, 30, LeatherArmor, Provides minimal protection find a replacement fast
+armor, 80, SteelArmor, A armor set forged with great care should reduce a good amount of damage
+armor, 50, ThugArmor, Modern leather armor not that bad not that great
+armor, 10, Cloth, There is no way you will get any protection with this.

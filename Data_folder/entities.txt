@@ -1,0 +1,115 @@
+The Delinquent|A former thug who used to be part of a small but ruthless group.|6
+Head 50 0
+Torso 200 0
+Left_Arm 45 0
+Right_Arm 45 0
+Left_Leg 55 0
+Right_Leg 55 0
+
+The Witch Doctor|He did not go down without a fight but then again he is here and without an arm.|5
+Head 40 0
+Torso 150 0
+Left_Arm 45 0
+Left_Leg 55 0
+Right_Leg 55 0
+
+HIM|DO NOT TRUST HIM.DO NOT LISTEN TO HIM.HE SEEKS ONLY TO DECEIVE.HE IS NOT YOUR FRIEND.|3
+EYE 100 0
+BODY 300 0
+MEMBERS 150 0
+
+The Void|A entity made of nothings how it is alive it is a mystery|1
+Void 700 0
+
+NULL|01001110 01010101 01001100 01001100 01001110 01010101 01001100 01001100 01001110 01010101 01001100 01001100|14
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+LNULL 1414 0
+
+Merc|He is here just for the blood my kind of guy|6
+Head 30 0
+Torso 300 0
+Left_Arm 50 0
+Right_Arm 50 0
+Left_Leg 60 0
+Right_Leg 60 0
+
+Vessel|The lowest of the low. All they can do is wonder and listen to orders.|6
+Head 80 0
+Torso 400 20
+Left_Arm 100 40
+Right_Arm 100 40
+Left_Leg 120 30
+Right_Leg 120 30
+
+Soldier|Vessels that have potential are turned into soldiers their only purpose is to defend and terminate the ones that the higher beings consider a threat.|5
+Head 200 0
+ArmGun 120 50
+Torso 100 40
+Left_Leg 60 30
+Right_Leg 60 30
+
+Bloated|Those who were gluttonous in the past turn into bloateds tanky slow mind your surroundings.|6
+Head 400 0
+Torso 1000 5
+Left_Arm 500 10
+Right_Leg 500 10
+Left_Leg 600 1
+Right_Leg 600 1
+
+Spaghetti|I am out of ideas|7
+Main_Dish 200 0
+Meatball1 50 20
+Meatball2 50 20
+Meatball3 50 20
+Meatball4 50 20
+Meatball5 50 20
+Meatball6 50 20
+
+Shadow|GOD FORBID|30
+I 100 5
+II 100 5
+III 100 5
+IV 100 5
+V 100 5
+VI 100 5
+VII 100 5
+VIII 100 5
+IX 100 5
+X 100 5
+XI 100 5
+XII 100 5
+XIII 100 5
+XIV 100 5
+XV 100 5
+XVI 100 5
+XVII 100 5
+XVIII 100 5
+XIX 100 5
+XX 100 5
+XXI 100 5
+XXII 100 5
+XXIII 100 5
+XXIV 100 5
+XXV 100 5
+XXVI 100 5
+XXVII 100 5
+XXVIII 100 5
+XXIX 100 5
+XXX 100 5
+
+Contraption|It is quite unfortunate the fate of this one|3
+Top_Contraption 1000 20
+Middle_Contraption 1500 30
+Bottom_Contraption 2000 0

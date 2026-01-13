@@ -1,26 +1,31 @@
 #include"../Header/Limb.h"
-limb::limb(float hp, float dmg)
+Limb::Limb(std::string name, float hp, float dmg)
 {
-    this->hp=hp;
-    this->dmg=dmg;
-};
-[[nodiscard]] bool limb::getintact() const
-{
-    return isintact;
+    this->name = name;
+    this->HP = hp;
+    this->DMG = dmg;
 }
-void limb::setintact()
+[[nodiscard]] bool Limb::getIntact() const
 {
-    isintact= false;
+    return isIntact;
 }
-[[nodiscard]] float limb::gethp() const
+void Limb::setIntact()
 {
-    return hp;
+    isIntact= false;
 }
-void limb::sethp(float new_hp)
+[[nodiscard]] float Limb::getHP() const
 {
-    hp=new_hp;
+    return HP;
 }
-[[nodiscard]] float limb::getdmg() const
+void Limb::setHP(float new_hp)
 {
-    return dmg;
+    HP=new_hp;
+}
+[[nodiscard]] float Limb::getDMG() const
+{
+    return DMG;
+}
+std::string Limb::getName() const
+{
+    return name;
 }

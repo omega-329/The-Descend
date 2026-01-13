@@ -1,8 +1,6 @@
-//
-// Created by omega on 09.12.2025.
-//
+
 #include "../Header/Armor.h"
-armor::armor(float dmgred) : dmgred(dmgred) {}
+armor:: armor(float dmgred,const std::string& nume,const std::string& descriere) : Item(descriere, nume), dmgred(dmgred){};
 [[nodiscard]] bool armor::getarmor() const
 {
     return ininv;
@@ -17,7 +15,7 @@ void armor::setarmor()
 }
 void armor::setequiped()
 {
-    isequiped=true;
+    isequiped=!isequiped;
 }
 float armor::interact ()
 {

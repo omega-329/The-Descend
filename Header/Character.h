@@ -2,40 +2,31 @@
 // Created by omega on 06.12.2025.
 //
 
-#ifndef OOP_PLAYER_H
-#define OOP_PLAYER_H
+#ifndef OOP_CHARACTER_H
+#define OOP_CHARACTER_H
 
-#include "Limb.h"
-#include "Weapons.h"
+#pragma once
+#include "Entity.h"
+#include "Weapon.h"
 #include "Armor.h"
-#include <string>
-#include <vector>
 
-class character
+class Character : public Entity
 {
-protected:
-    std::string descriere=" ", nume=" ";
-    int nrlimb=6;
-    bool unlock=false, isalive=true;
-    std::vector<limb>limbs;
-    weapons currentweapon;
-    armor currentarmor;
+private:
+    weapons currentWeapon;
+    armor currentArmor;
+    bool guard;
+
 public:
-    character ()=default;
-    [[nodiscard]] bool getlock() const;
-    void setlock();
-    [[nodiscard]] std::string& getnume();
-    [[nodiscard]] bool getalive() const;
-    void setalive();
-    [[nodiscard]] int getlimbcount() const;
-    void updatelimbstatus(limb curentlimb);
-    character(std::string& descriere, std::string& nume,const  int &nrlimb, const std::vector<limb>& limbs) :descriere(std::move(descriere)), nume(std::move(nume)), nrlimb(nrlimb), limbs(limbs) {};
-    friend std::istream& operator>>(std::istream& in, character& p);
-    friend std::ostream& operator<<(std::ostream& out,const character& p);
-    weapons equipweapon(const weapons& noww);
-    weapons& getcurrentweapon();
-    armor equiparmor(const armor& nowa);
-    ~character()=default;
-    [[nodiscard]] limb getlimb(int i) const;
+    using Entity::Entity;
+
+    void equipWeapon(const weapons& w);
+    void equipArmor(const armor& a);
+
+    void setGuarding(bool val);
+    bool getGuarding() const;
+
+    weapons& getWeapon();
+    [[nodiscard]] const armor& getArmor() const;
 };
-#endif //OOP_PLAYER_H
+#endif //OOP_CHARACTER_H

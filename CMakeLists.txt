@@ -59,21 +59,48 @@ endif()
 add_executable(${MAIN_EXECUTABLE_NAME}
         main.cpp
         Header/Character.h
-        Header/Enemies.h
-        Header/items.h
-        Header/Weapons.h
-        Header/Flasks.h
+        Header/Enemy.h
+        Header/Item.h
+        Header/Weapon.h
+        Header/Flask.h
         Header/Armor.h
         Header/Limb.h
         Source/Character.cpp
-        Source/Enemies.cpp
+        Source/Enemy.cpp
         Source/Limb.cpp
-        Source/Weapons.cpp
+        Source/Weapon.cpp
         Header/PlayerInventory.h
-        Source/Flasks.cpp
+        Source/Flask.cpp
         Source/Armor.cpp
         Header/Combat.h
         Source/Combat.cpp
+        Header/Player.h
+        Source/Player.cpp
+        Header/Gamestate.h
+        Header/Playstate.h
+        Source/Playstate.cpp
+        Header/Menustate.h
+        Source/Menustate.cpp
+        Header/Game.h
+        Source/Game.cpp
+        Header/Inventorystate.h
+        Source/Inventorystate.cpp
+        Source/Item.cpp
+        Header/Itemfactory.h
+        Source/Itemfactory.cpp
+        Source/Itemloader.cpp
+        Source/PlayerInventory.cpp
+        Header/Itemloader.h
+        Header/Enemyentity.h
+        Source/Enemyentity.cpp
+        Header/CombatState.h
+        Source/CombatState.cpp
+        Header/Party.h
+        Source/Party.cpp
+        Header/Entity.h
+        Header/EntityLoader.h
+        Source/EntityLoader.cpp
+        Source/Entity.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
@@ -176,6 +203,6 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 
-copy_files(FILES tastatura.txt thebusiness.txt enemy.txt chara.txt TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES tastatura.txt Data_folder/thebusiness.txt Data_folder/entities.txt TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(DIRECTORY Header Source COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

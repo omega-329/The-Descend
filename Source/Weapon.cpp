@@ -1,10 +1,7 @@
-#include "../Header/Weapons.h"
-weapons::weapons(float dmg, float miss,const std::string& descriere,const std::string& nume)
+#include "../Header/Weapon.h"
+weapons::weapons(float dmg, float miss, const std::string& descriere, const std::string& nume)
+    : Item(descriere, nume), dmg(dmg), miss(miss)
 {
-    this->dmg=dmg;
-    this->miss=miss;
-    this->descriere=descriere;
-    this->nume=nume;
 }
 [[nodiscard]] bool weapons::getweapon() const
 {
@@ -20,7 +17,7 @@ void weapons::setweapon()
 }
 void weapons::setequip()
 {
-    isequiped=true;
+    isequiped=!isequiped;
 }
 float weapons::interact()
 {

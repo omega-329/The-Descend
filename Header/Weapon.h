@@ -6,8 +6,8 @@
 #define OOP_WEAPONS_H
 
 #include <string>
-#include "Items.h"
-class weapons : public Items
+#include "Item.h"
+class weapons : public Item
 {
 protected:
     bool ininv=false, isequiped=false;

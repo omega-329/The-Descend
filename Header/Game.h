@@ -9,6 +9,7 @@
 #include "GameState.h"
 #include "Weapon.h"
 #include "PlayerInventory.h"
+#include "Codex.h"
 
 class Game
 {
@@ -18,6 +19,7 @@ public:
     void changeState(std::unique_ptr<GameState> newState);
     sf::Font& getFont();
     sf::Texture& getPlayerTexture();
+    Codex& getCodex();
     void pushState(std::unique_ptr<GameState> newState);
     void popState();
     sf::Texture& getVesselTexture();
@@ -26,6 +28,7 @@ public:
     sf::Texture& getSpaghettiTexture();
     sf::Texture& getShadowTexture();
     sf::Texture& getContraptionTexture();
+    void quit();
 private:
     sf::RenderWindow window;
     sf::Clock clock;
@@ -33,5 +36,6 @@ private:
     sf::Texture playerTexture;
     sf::Font font;
     sf::Texture vesselTex, soldierTex, bloatedTex, spaghettiTex, shadowTex, contraptionTex;
+    Codex codex;
 };
 #endif //OOP_GAME_H

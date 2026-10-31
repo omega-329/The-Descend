@@ -1,6 +1,6 @@
-#include "../Header/Inventorystate.h"
+#include "../Header/InventoryState.h"
 #include "../Header/Game.h"
-#include "../Header/Menustate.h"
+#include "../Header/Pauzestate.h"
 #include "../Header/Armor.h"
 #include "../Header/Weapon.h"
 #include "../Header/Flask.h"
@@ -26,7 +26,7 @@ void InventoryState::handleEvent(const sf::Event& event)
                 game.popState();
             }
             else if (code == sf::Keyboard::Key::Down) {
-                if (selectedCharIndex < player.getParty().getMembers().size() - 1)
+                if (selectedCharIndex < player.getParty().getMembers().size() - 1 && player.getParty().getMembers().size()>0)
                     selectedCharIndex++;
             }
             else if (code == sf::Keyboard::Key::Up) {
@@ -73,6 +73,9 @@ void InventoryState::handleEvent(const sf::Event& event)
             }
             else if (code == sf::Keyboard::Key::Enter) {
                 equipOrUseItem(items[selectedItemIndex]);
+                items = getFilteredItems();
+                if (!items.empty() && selectedItemIndex >= (int)items.size())
+                    selectedItemIndex = (int)items.size() - 1;
             }
         }
     }
@@ -102,28 +105,24 @@ std::vector<Item*> InventoryState::getFilteredItems() const
 
 void InventoryState::equipOrUseItem(Item* item) const
 {
-    auto& character = player.getParty().getMembers()[selectedCharIndex];
+    if (player.getParty().getMembers().size() > 0)
+    {
+        auto& character = player.getParty().getMembers()[selectedCharIndex];
 
-    if (auto* w = dynamic_cast<weapons*>(item)) {
-        character.equipWeapon(*w);
-        std::cout << "[LOG] " << character.getName() << " equipped " << w->getname() << "!" << std::endl;
-    }
-    else if (auto* a = dynamic_cast<armor*>(item)) {
-        character.equipArmor(*a);
-        std::cout << "[LOG] " << character.getName() << " equipped " << a->getname() << "!" << std::endl;
-    }
-    else if (auto* f = dynamic_cast<flasks*>(item)) {
-        float healingAmount = f->interact();
-
-        for (int i = 0; i < character.getLimbCount(); ++i) {
-            auto& limb = character.getLimb(i);
-            {
-                limb.setHP(limb.getHP() + healingAmount);
-            }
+        if (auto* w = dynamic_cast<weapons*>(item)) {
+            character.equipWeapon(*w);
+            std::cout << "[LOG] " << character.getName() << " equipped " << w->getName() << "!" << std::endl;
         }
-
-        std::cout << "[LOG] " << character.getName() << " used " << f->getname()
-                  << " and recovered " << healingAmount << " HP!" << std::endl;
+        else if (auto* a = dynamic_cast<armor*>(item)) {
+            character.equipArmor(*a);
+            std::cout << "[LOG] " << character.getName() << " equipped " << a->getName() << "!" << std::endl;
+        }
+        else if (auto* f = dynamic_cast<flasks*>(item)) {
+            float effect = f->interact();
+            character.applyLimbEffect(effect);
+            std::cout << "[LOG] " << character.getName() << " used " << f->getName() << std::endl;
+            player.getInventory().consume(f);
+        }
     }
 }
 void InventoryState::draw(sf::RenderWindow& window)
@@ -156,7 +155,7 @@ void InventoryState::draw(sf::RenderWindow& window)
             sf::Text actionText(font,actions[i], 24);
             actionText.setPosition({300, 80.f + i * 40});
 
-            if (i == selectedActionIndex && currentLayer >= MenuLayer::LAYER_ACTIONS) {
+            if (i == selectedActionIndex) {
                 if (currentLayer == MenuLayer::LAYER_ITEMS)
                     actionText.setFillColor(sf::Color::Green);
                 else
@@ -181,16 +180,19 @@ void InventoryState::draw(sf::RenderWindow& window)
         }
 
         for (size_t i = 0; i < items.size(); ++i) {
-            std::string displayName = items[i]->getname();
+            std::string displayName = items[i]->getName();
+            if (items[i]->getQuantity() > 1) {
+                displayName += " x" + std::to_string(items[i]->getQuantity());
+            }
             bool isEquipped = false;
 
             if (auto* w = dynamic_cast<weapons*>(items[i])) {
-                if (w->getname() == currentCharacter.getWeapon().getname()) {
+                if (w->getName() == currentCharacter.getWeapon().getName()) {
                     isEquipped = true;
                 }
             }
             else if (auto* a = dynamic_cast<armor*>(items[i])) {
-                if (a->getname() == currentCharacter.getArmor().getname()) {
+                if (a->getName() == currentCharacter.getArmor().getName()) {
                     isEquipped = true;
                 }
             }

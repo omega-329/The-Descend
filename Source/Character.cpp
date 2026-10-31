@@ -1,7 +1,4 @@
 #include "../Header/Character.h"
-#include "../Header/Limb.h"
-#include <vector>
-#include <iostream>
 
 void Character::equipWeapon(const weapons& noww)
 {
@@ -22,3 +19,9 @@ void Character::setGuarding(bool val)
 }
 weapons& Character::getWeapon() { return currentWeapon; }
 const armor& Character::getArmor() const {return currentArmor; }
+void Character::applyLimbEffect(float amount)
+{
+    for (int i = 0; i < getLimbCount(); ++i) {
+        getLimb(i).setHP(getLimb(i).getHP() + amount);
+    }
+}

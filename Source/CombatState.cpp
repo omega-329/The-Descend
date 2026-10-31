@@ -1,27 +1,23 @@
 
+
 #include "../Header/CombatState.h"
 #include "../Header/Game.h"
+#include "../Header/GameOverState.h"
 #include <iostream>
 
-CombatState::CombatState(Game& game, Player& player, std::vector<Enemies> enemies, const sf::Texture& enemyTex)
+CombatState::CombatState(Game& game, Player& player, Enemies enemy, const sf::Texture& enemyTex)
     : game(game)
     , playerRef(player)
-    , combatSystem(player.getParty().getMembers(), enemies)
+    , combatSystem(player.getParty().getMembers(), enemy)
 {
     uiBox.setSize({1200.f, 200.f});
     uiBox.setPosition({0.f, 600.f});
     uiBox.setFillColor(sf::Color(30, 30, 30));
 
-    auto& liveEnemies = combatSystem.getEnemies();
+    auto& liveEnemies = combatSystem.getEnemy();
 
-    float startX = 800.f;
-    float startY = 200.f;
-    float spacing = 150.f;
-
-    for (size_t i = 0; i < liveEnemies.size(); ++i) {
-        liveEnemies[i].setTexture(enemyTex);
-        liveEnemies[i].setPosition(startX + i * spacing, startY);
-    }
+    liveEnemies.setTexture(enemyTex);
+    liveEnemies.setPosition(600.f, 400.f);
 }
 
 void CombatState::update(float dt)
@@ -35,50 +31,61 @@ void CombatState::update(float dt)
         }
         return;
     }
-
-    if (!combatSystem.isPlayerTurn()) {
-        enemyTurnTimer += dt;
-        if (enemyTurnTimer > 1.0f) {
-            combatSystem.processEnemyTurn();
-            enemyTurnTimer = 0.f;
-        }
-    }
     if (combatSystem.isVictory())
     {
         battleOver = true;
     }
     if (combatSystem.isDefeat())
     {
-        std::cout << "GAME OVER" << std::endl;
-        game.popState();
+        game.changeState(std::make_unique<GameOverState>(game));
         return;
     }
-}
-
+    if (!combatSystem.isDefeat() && !combatSystem.isVictory())
+    {
+        if (!combatSystem.isPlayerTurn()) {
+            enemyTurnTimer += dt;
+            if (enemyTurnTimer > 1.0f) {
+                combatSystem.processEnemyTurn();
+                enemyTurnTimer = 0.f;
+            }
+    }
+        }
+    }
 void CombatState::handleEvent(const sf::Event& event)
 {
+    if (battleOver) return;
     if (auto* keyEvent = event.getIf<sf::Event::KeyPressed>())
     {
         sf::Keyboard::Key key = keyEvent->code;
         if (!combatSystem.isPlayerTurn()) return;
         if (subState == SubState::SelectingAction) {
-            if (key == sf::Keyboard::Key::Up)   menuIndex = 0;
-            if (key == sf::Keyboard::Key::Down) menuIndex = 1;
+            const int count = static_cast<int>(actionOptions.size());
+            if (key == sf::Keyboard::Key::Up)   menuIndex = (menuIndex - 1 + count) % count;
+            if (key == sf::Keyboard::Key::Down) menuIndex = (menuIndex + 1) % count;
 
             if (key == sf::Keyboard::Key::Enter || key == sf::Keyboard::Key::Space) {
-                if (menuIndex == 0) {
-                    subState = SubState::SelectingLimb;
-                    limbIndex = 0;
-                } else {
-                    combatSystem.playerGuard();
+                switch (menuIndex) {
+                    case 0:  // Attack
+                        subState = SubState::SelectingLimb;
+                        limbIndex = 0;
+                        break;
+                    case 1:  // Guard
+                        combatSystem.playerGuard();
+                        break;
+                    case 2:  // Item
+                        subState = SubState::SelectingItem;
+                        itemIndex = 0;
+                        break;
+                    default:
+                        combatSystem.playerPass();
+                        break;
                 }
             }
         }
         else if (subState == SubState::SelectingLimb) {
-            auto& targets = combatSystem.getEnemies();
-            if (targets.empty()) return;
-
-            int maxLimbs = targets[0].getLimbCount();
+            auto& target = combatSystem.getEnemy();
+            if (!target.isAlive()) return;
+            int maxLimbs = target.getLimbCount();
             if (key == sf::Keyboard::Key::Up)
             {
                 limbIndex--;
@@ -90,7 +97,6 @@ void CombatState::handleEvent(const sf::Event& event)
                     scrollOffset = limbIndex;
                 }
             }
-
             if (key == sf::Keyboard::Key::Down)
             {
                 limbIndex++;
@@ -105,8 +111,28 @@ void CombatState::handleEvent(const sf::Event& event)
             if (key == sf::Keyboard::Key::Escape) subState = SubState::SelectingAction;
 
             if (key == sf::Keyboard::Key::Enter || key == sf::Keyboard::Key::Space) {
-                combatSystem.playerAttack(0, limbIndex);
+                combatSystem.playerAttack(limbIndex);
                 subState = SubState::SelectingAction;
+            }
+        } else if (subState == SubState::SelectingItem) {
+            auto consumables = playerRef.getInventory().getConsumables();
+            if (consumables.empty()) {
+                subState = SubState::SelectingAction;
+                return;
+            }
+            const int count = static_cast<int>(consumables.size());
+            if (key == sf::Keyboard::Key::Up) {
+                itemIndex = (itemIndex - 1 + count) % count;
+            } else if (key == sf::Keyboard::Key::Down) {
+                itemIndex = (itemIndex + 1) % count;
+            } else if (key == sf::Keyboard::Key::Escape) {
+                subState = SubState::SelectingAction;
+            } else if (key == sf::Keyboard::Key::Enter || key == sf::Keyboard::Key::Space) {
+                Item* item = consumables[itemIndex];
+                combatSystem.playerUseItem(*item);
+                playerRef.getInventory().consume(item);
+                subState = SubState::SelectingAction;
+                itemIndex = 0;
             }
         }
     }
@@ -116,18 +142,15 @@ void CombatState::draw(sf::RenderWindow& window)
 {
     window.clear(sf::Color::Black);
 
-    auto& enemies = combatSystem.getEnemies();
-    for (auto& e : enemies)
-    {
+    auto& enemies = combatSystem.getEnemy();
         bool alive = false;
-        for(int i=0; i<e.getLimbCount(); ++i) {
-            if(e.getLimb(i).getHP() > 0) { alive = true; break; }
+        for(int i=0; i<enemies.getLimbCount(); ++i) {
+            if(enemies.getLimb(i).getHP() > 0) { alive = true; break; }
         }
 
         if (alive) {
-            e.draw(window);
+            enemies.draw(window);
         }
-    }
 
     window.draw(uiBox);
     sf::Font& font = game.getFont();
@@ -149,20 +172,16 @@ void CombatState::draw(sf::RenderWindow& window)
 
     if (combatSystem.isPlayerTurn()) {
         if (subState == SubState::SelectingAction) {
-            sf::Text atk(font, "Attack", 30);
-            atk.setPosition({400, 620});
-            atk.setFillColor(menuIndex == 0 ? sf::Color::Yellow : sf::Color::White);
-
-            sf::Text grd(font, "Guard", 30);
-            grd.setPosition({400, 660});
-            grd.setFillColor(menuIndex == 1 ? sf::Color::Yellow : sf::Color::White);
-
-            window.draw(atk);
-            window.draw(grd);
+            for (int i = 0; i < static_cast<int>(actionOptions.size()); ++i) {
+                sf::Text optionText(font, actionOptions[i], 30);
+                optionText.setPosition({400.f, 620.f + i * 40.f});   // 620, 660 -> same as before
+                optionText.setFillColor(i == menuIndex ? sf::Color::Yellow : sf::Color::White);
+                window.draw(optionText);
+            }
         }
         else if (subState == SubState::SelectingLimb) {
-            if (!enemies.empty()) {
-                Enemies& target = enemies[0];
+            if (enemies.isAlive()) {
+                Enemies& target = enemies;
 
                 int start = scrollOffset;
                 int end = std::min(target.getLimbCount(), scrollOffset + VISIBLE_ITEMS);
@@ -200,17 +219,29 @@ void CombatState::draw(sf::RenderWindow& window)
                     window.draw(downArrow);
                 }
              }
+        } else if (subState == SubState::SelectingItem) {
+            auto consumables = playerRef.getInventory().getConsumables();
+            if (consumables.empty()) {
+                sf::Text emptyText(font, "No items.", 24);
+                emptyText.setPosition({400.f, 620.f});
+                emptyText.setFillColor(sf::Color::White);
+                window.draw(emptyText);
+            } else {
+                for (int i = 0; i < (int)consumables.size(); ++i) {
+                    std::string label = consumables[i]->getName();
+                    if (consumables[i]->getQuantity() > 1)
+                        label += " x" + std::to_string(consumables[i]->getQuantity());
+                    sf::Text t(font, label, 24);
+                    t.setPosition({400.f, 620.f + i * 30.f});
+                    if (i == itemIndex)
+                        t.setFillColor(sf::Color::Yellow);
+                    else
+                        t.setFillColor(sf::Color::White);
+                    window.draw(t);
+                }
+            }
         }
     }
-    if (battleOver)
-    {
-        sf::Text winText(game.getFont(), "VICTORY!", 60);
-        winText.setPosition({500, 300});
-        winText.setFillColor(sf::Color::Green);
-        window.draw(winText);
-
-    }
-
     sf::Text log(font, combatSystem.getLastMessage(), 20);
     log.setPosition({10, 10});
     window.draw(log);

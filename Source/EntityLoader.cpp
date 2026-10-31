@@ -24,14 +24,13 @@ std::vector<Entity> loadEntities(const std::string& path) {
         {
             std::getline(file, line);
             std::stringstream limbLine(line);
-
             float lhp, ldmg;
             std::string limbName;
             limbLine >> limbName >> lhp >> ldmg;
             if (!limbLine) {
                 throw std::runtime_error("Malformed limb line: " + line);
             }
-            limbs.emplace_back(limbName, lhp, ldmg);
+            limbs.emplace_back(limbName, lhp, lhp, ldmg);
         }
         file.ignore();
 

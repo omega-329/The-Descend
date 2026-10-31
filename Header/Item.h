@@ -7,11 +7,16 @@ class Item
 protected:
     bool unlock=false;
     std::string descriere=" ", nume=" ";
+    int quantity=1;
 public:
     Item()=default;
-    [[nodiscard]] bool getlock() const;
-    void setlock();
-    [[nodiscard]] std::string getname() const;
+    [[nodiscard]] bool getLock() const;
+    void setLock();
+    [[nodiscard]] std::string getName() const;
+    [[nodiscard]] int getQuantity() const;
+    void setQuantity(int q);
+    void decreaseQuantity();
+    [[nodiscard]] virtual bool isConsumable() const;
     Item(const std::string& descriere,const std::string& nume);
     virtual float interact() =0;
     virtual ~Item()=default;

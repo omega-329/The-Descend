@@ -3,21 +3,21 @@ weapons::weapons(float dmg, float miss, const std::string& descriere, const std:
     : Item(descriere, nume), dmg(dmg), miss(miss)
 {
 }
-[[nodiscard]] bool weapons::getweapon() const
+[[nodiscard]] bool weapons::getWeapon() const
 {
-    return ininv;
+    return inInv;
 }
-void weapons::setweapon()
+void weapons::setWeapon()
 {
-    ininv=true;
+    inInv=true;
 }
-[[nodiscard]] bool weapons::getequip () const
+[[nodiscard]] bool weapons::getEquip () const
 {
-    return isequiped;
+    return isEquiped;
 }
-void weapons::setequip()
+void weapons::setEquip()
 {
-    isequiped=!isequiped;
+    isEquiped=!isEquiped;
 }
 float weapons::interact()
 {

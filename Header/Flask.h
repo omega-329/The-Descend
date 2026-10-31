@@ -7,11 +7,11 @@
 class flasks : public Item
 {
 protected:
-    int nrflask=0;
-    float dmg=0, hpadd=40, armoradd=0;
+    float dmg=0, hpAdd=40, armorAdd=0;
 public:
     flasks()=default;
-    flasks(float dmg, float hpadd, float armoradd,const std::string& nume,const std::string& descriere);
+    flasks(float dmg, float hpAdd, float armorAdd,const std::string& nume,const std::string& descriere);
     float interact () override;
+    [[nodiscard]] bool isConsumable() const override;
 };
 #endif //OOP_FLASKS_H

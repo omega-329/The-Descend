@@ -6,15 +6,15 @@
 class armor : public Item
 {
 protected:
-    bool ininv=false, isequiped=false;
-    float dmgred=0;
+    bool inInv=false, isEquiped=false;
+    float dmgRed=0;
 public:
     armor() = default;
     armor(float dmgred,const std::string& nume,const std::string& descriere);
-    [[nodiscard]] bool getarmor () const;
-    void setarmor();
-    [[nodiscard]] bool getequiped() const;
-    void setequiped();
+    [[nodiscard]] bool getArmor () const;
+    void setArmor();
+    [[nodiscard]] bool getEquiped() const;
+    void setEquiped();
     float interact () override;
 };
 

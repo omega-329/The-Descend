@@ -11,6 +11,8 @@ class PlayerInventory
 public:
     void addItem(std::unique_ptr<Item> item);
     const std::vector<std::unique_ptr<Item>>& getItems() const;
+    std::vector<Item*> getConsumables() const;
+    bool consume(Item* item);
 
 private:
     std::vector<std::unique_ptr<Item>> items;

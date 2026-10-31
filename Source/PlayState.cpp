@@ -1,15 +1,17 @@
 
 #include "../Header/PlayState.h"
 #include "../Header/Game.h"
-#include "../Header/Menustate.h"
-#include "../Header/Inventorystate.h"
-#include "../Header/Itemloader.h"
+#include "../Header/Pauzestate.h"
+#include "../Header/InventoryState.h"
+#include "../Header/ItemLoader.h"
 #include "../Header/CombatState.h"
 #include "../Header/EntityLoader.h"
+
 
 PlayingState::PlayingState(Game& game, sf::Texture& texture)
     :  player(texture, 200.f), game(game)
 {
+    rng.seed(std::random_device{}());
     auto items = loadItemsFromFile("../Data_folder/thebusiness.txt");
     for (auto& item : items)
         player.getInventory().addItem(std::move(item));
@@ -27,6 +29,10 @@ PlayingState::PlayingState(Game& game, sf::Texture& texture)
     {
         std::cerr << "ERROR: Could not load enemy.png!" << std::endl;
     }
+    if (!genericHunterTexture.loadFromFile("../Sprite/hunter.png"))
+    {
+        std::cerr << "ERROR: Could not load hunter.png!" << std::endl;
+    }
     std::vector<std::string> textureNames = {"Vessel","Soldier","Bloated", "Spaghetti", "Shadow",  "Contraption"};
     for (const auto& name : textureNames) {
         sf::Texture tex;
@@ -37,14 +43,12 @@ PlayingState::PlayingState(Game& game, sf::Texture& texture)
             battleTextures[name] = genericEnemyTexture;
         }
     }
-    std::random_device rd;
-    std::mt19937 g(rd());
     std::vector<int> heroIndices;
     for (int i = 0; i <= 5; ++i) heroIndices.push_back(i);
-    std::shuffle(heroIndices.begin(), heroIndices.end(), g);
+    std::shuffle(heroIndices.begin(), heroIndices.end(), rng);
     std::vector<int> enemyIndices;
     for (int i = 6; i <= 11; ++i) enemyIndices.push_back(i);
-    std::shuffle(enemyIndices.begin(), enemyIndices.end(), g);
+    std::shuffle(enemyIndices.begin(), enemyIndices.end(), rng);
     for (int i = 0; i < 4; ++i)
     {
         int index = heroIndices[i];
@@ -52,23 +56,52 @@ PlayingState::PlayingState(Game& game, sf::Texture& texture)
         Character partyMember(
             entities[index].getName(),
             entities[index].getDescription(),
-            entities[index].getLimbs()
+            entities[index].getLimbs(),
+            genericHunterTexture
         );
         player.getParty().addMember(std::move(partyMember));
+
+        // The hunter is now part of your run, so the codex knows them.
+        game.getCodex().markSeen(entities[index].getName());
     }
+    // Monsters must never appear on top of the player: at frame 1 that would
+    // mean an instant, unavoidable fight. Re-roll any spawn closer than this.
+    const sf::Vector2f playerCenter = player.getBounds().getCenter();
+    constexpr float kSafeSpawnDistance = 260.f;
+
     for (int i = 0; i < 3; ++i)
     {
         int index = enemyIndices[i];
             Enemies monster(
                 entities[index].getName(),
                 entities[index].getDescription(),
-                entities[index].getLimbs()
+                entities[index].getLimbs(),
+                genericEnemyTexture
             );
 
-            float randX = 500.f + static_cast<float>(rand() % 600);
-            float randY = 100.f + static_cast<float>(rand() % 600);
+        std::uniform_int_distribution xDist(500, 1099);
+        std::uniform_int_distribution yDist(100, 699);
 
-        EnemyEntity monsterWorld(std::move(monster), genericEnemyTexture, {randX, randY});
+        sf::Vector2f spawnPos{1099.f, 100.f};      // far corner, used only if every roll fails
+
+        for (int attempt = 0; attempt < 64; ++attempt)
+        {
+            const sf::Vector2f candidate{
+                static_cast<float>(xDist(rng)),
+                static_cast<float>(yDist(rng))
+            };
+
+            const float dx = candidate.x - playerCenter.x;
+            const float dy = candidate.y - playerCenter.y;
+
+            if (dx * dx + dy * dy >= kSafeSpawnDistance * kSafeSpawnDistance)
+            {
+                spawnPos = candidate;
+                break;
+            }
+        }
+
+        EnemyEntity monsterWorld(std::move(monster), genericEnemyTexture, spawnPos);
 
             enemiess.push_back(std::move(monsterWorld));
     }
@@ -101,14 +134,13 @@ void PlayingState::update(float dt)
     {
         if (player.getBounds().findIntersection(it->getBounds()))
         {
-            std::vector<Enemies> encounter;
-            encounter.push_back(it->getEnemy());
+            Enemies encounter = it->getEnemy();
             std::string enemyName = it->getEnemy().getName();
             sf::Texture& textureToUse = (battleTextures.count(enemyName))
                               ? battleTextures[enemyName]
                               : genericEnemyTexture;
+            game.getCodex().markSeen(enemyName);
             game.pushState(std::make_unique<CombatState>(game, player, encounter, textureToUse));
-
             it = enemiess.erase(it);
             return;
         }

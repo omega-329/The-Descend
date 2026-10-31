@@ -1,6 +1,6 @@
 
-#ifndef OOP_MENUSTATE_H
-#define OOP_MENUSTATE_H
+#ifndef OOP_PAUZESTATE_H
+#define OOP_PAUZESTATE_H
 #pragma once
 #include "GameState.h"
 #include "Player.h"
@@ -19,4 +19,4 @@ private:
     Game& game;
     sf::Text text;
 };
-#endif //OOP_MENUSTATE_H
+#endif //OOP_PAUZESTATE_H

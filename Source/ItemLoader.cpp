@@ -1,5 +1,5 @@
-#include "../Header/Itemfactory.h"
-#include "../Header/Itemloader.h"
+#include "../Header/ItemFactory.h"
+#include "../Header/ItemLoader.h"
 #include <fstream>
 #include <sstream>
 

@@ -5,20 +5,21 @@
 #include "GameState.h"
 #include "Combat.h"
 #include "Player.h"
-// REMOVE: #include "CombatEnemy.h" <-- Delete this file from your project too if you can
+#include <vector>
+#include <string>
 
 class Game;
 
 enum class SubState {
     SelectingAction,
     SelectingLimb,
-    ProcessingTurn
+    SelectingItem
 };
 
 class CombatState : public GameState
 {
 public:
-    CombatState(Game& game, Player& player, std::vector<Enemies> enemies, const sf::Texture& enemyTex);
+    CombatState(Game& game, Player& player, Enemies enemy, const sf::Texture& enemyTex);
 
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
@@ -31,8 +32,10 @@ private:
     Combat combatSystem;
 
     SubState subState = SubState::SelectingAction;
+    const std::vector<std::string> actionOptions{"Attack", "Guard", "Item"};
     int menuIndex = 0;
     int limbIndex = 0;
+    int itemIndex = 0;
 
     sf::RectangleShape uiBox;
     float enemyTurnTimer = 0.0f;

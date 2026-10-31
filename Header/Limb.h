@@ -6,14 +6,15 @@
 class Limb
 {
 protected:
-    float HP=20, DMG=0;
+    float HP=20, DMG=0, MaxHP=20;
     bool isIntact=true;
     std::string name;
 public:
-    Limb(std::string name, float hp, float dmg);
+    Limb(std::string name, float MaxHP, float hp, float dmg);
     [[nodiscard]] bool getIntact() const;
-    void setIntact();
+    void setSevered();
     [[nodiscard]] float getHP() const;
+    [[nodiscard]] float getMaxHP() const;
     void setHP(float new_hp);
     [[nodiscard]] float getDMG() const;
     std::string getName() const;

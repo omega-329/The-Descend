@@ -25,8 +25,11 @@ std::unique_ptr<Item> ItemFactory::create(const std::string& type,const std::vec
         float dmg = std::stof(data[0]);
         float heal = std::stof(data[1]);
         float armor = std::stof(data[2]);
-        return std::make_unique<flasks>(
+        auto item = std::make_unique<flasks>(
             dmg, heal,armor,  data[3], data[4]);
+        if (data.size() > 5)
+            item->setQuantity(std::stoi(data[5]));
+        return item;
     }
 
     throw std::runtime_error("Unknown item type: " + type);

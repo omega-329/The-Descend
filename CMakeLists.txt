@@ -79,8 +79,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Header/Gamestate.h
         Header/Playstate.h
         Source/Playstate.cpp
-        Header/Menustate.h
-        Source/Menustate.cpp
+        Header/Pauzestate.h
+        Source/Pauzestate.cpp
         Header/Game.h
         Source/Game.cpp
         Header/Inventorystate.h
@@ -101,6 +101,14 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         Header/EntityLoader.h
         Source/EntityLoader.cpp
         Source/Entity.cpp
+        Header/GameOverState.h
+        Source/GameOverState.cpp
+        Header/MainMenuState.h
+        Source/MainMenuState.cpp
+        Header/Codex.h
+        Source/Codex.cpp
+        Header/CodexState.h
+        Source/CodexState.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

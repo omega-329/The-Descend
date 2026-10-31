@@ -6,29 +6,31 @@
 #include <random>
 #include "Character.h"
 #include "Enemy.h"
+#include "Item.h"
 
 class Combat
 {
 public:
 
-    Combat(std::vector<Character>& party, std::vector<Enemies> enemies);
+    Combat(std::vector<Character>& party, Enemies enemy);
 
     bool isPlayerTurn() const;
     int getCurrentCharacterIndex() const;
     std::string getLastMessage() const;
-
+    void playerPass();
     void playerGuard();
-    void playerAttack(int enemyIndex, int limbIndex);
+    void playerAttack(int limbIndex);
+    void playerUseItem(Item& item);
     void processEnemyTurn();
 
     bool isVictory();
     bool isDefeat() const;
 
-    std::vector<Enemies>& getEnemies() { return enemies; }
+    Enemies& getEnemy() { return enemy; }
 
 private:
     std::vector<Character>& party;
-    std::vector<Enemies> enemies;
+    Enemies enemy;
 
     int currentTurnIndex = 0;
     bool playerTurn = true;

@@ -1,16 +1,20 @@
 #include "../Header/Flask.h"
-flasks::flasks(float dmg, float hpadd, float armoradd,const std::string& nume,const std::string& descriere)
-    :  Item(descriere, nume), dmg(dmg), hpadd(hpadd), armoradd(armoradd)
+flasks::flasks(float dmg, float hpAdd, float armorAdd,const std::string& nume,const std::string& descriere)
+    :  Item(descriere, nume), dmg(dmg), hpAdd(hpAdd), armorAdd(armorAdd)
 {
 };
 float flasks::interact()
 {
     if (dmg != 0)
         return dmg;
-    else if (hpadd != 0)
-        return hpadd;
-    else if (armoradd != 0)
-        return armoradd;
+    else if (hpAdd != 0)
+        return hpAdd;
+    else if (armorAdd != 0)
+        return armorAdd;
     else
         return 0;
+}
+[[nodiscard]] bool flasks::isConsumable() const
+{
+    return true;
 }

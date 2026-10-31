@@ -1,0 +1,5 @@
+Sprites
+
+    Hunter sprite ---- PNGWing
+    Enemy sprite ---- Mandela Catalogue - Alex Kister
+    Player sprite ---- Fear Assessment - Alexander Wiseman

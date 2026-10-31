@@ -15,7 +15,7 @@ class Character : public Entity
 private:
     weapons currentWeapon;
     armor currentArmor;
-    bool guard;
+    bool guard = false;
 
 public:
     using Entity::Entity;
@@ -24,9 +24,10 @@ public:
     void equipArmor(const armor& a);
 
     void setGuarding(bool val);
-    bool getGuarding() const;
+    [[nodiscard]] bool getGuarding() const;
 
     weapons& getWeapon();
     [[nodiscard]] const armor& getArmor() const;
+    void applyLimbEffect(float amount);
 };
 #endif //OOP_CHARACTER_H

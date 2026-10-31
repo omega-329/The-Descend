@@ -1,23 +1,23 @@
 
 #include "../Header/Armor.h"
-armor:: armor(float dmgred,const std::string& nume,const std::string& descriere) : Item(descriere, nume), dmgred(dmgred){};
-[[nodiscard]] bool armor::getarmor() const
+armor:: armor(float dmgred,const std::string& nume,const std::string& descriere) : Item(descriere, nume), dmgRed(dmgred){};
+[[nodiscard]] bool armor::getArmor() const
 {
-    return ininv;
+    return inInv;
 }
-void armor::setarmor()
+void armor::setArmor()
 {
-    ininv=true;
+    inInv=true;
 }
-[[nodiscard]] bool armor::getequiped () const
+[[nodiscard]] bool armor::getEquiped () const
 {
-    return isequiped;
+    return isEquiped;
 }
-void armor::setequiped()
+void armor::setEquiped()
 {
-    isequiped=!isequiped;
+    isEquiped=!isEquiped;
 }
 float armor::interact ()
 {
-    return dmgred;
+    return dmgRed;
 }

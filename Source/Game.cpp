@@ -2,7 +2,8 @@
 #include "../Header/Game.h"
 #include "../Header/GameState.h"
 #include "../Header/PlayState.h"
-#include "../Header/Itemloader.h"
+#include "../Header/ItemLoader.h"
+#include "../Header/MainMenuState.h"
 #include <SFML/Graphics/Font.hpp>
 Game::Game()
     : window(sf::VideoMode({1200, 800}), "The Descent")
@@ -31,7 +32,9 @@ Game::Game()
     if (!contraptionTex.loadFromFile("../Sprite/Contraption.png")) {
         throw std::runtime_error("Failed to load texture");
     }
-    state.push_back(std::make_unique<PlayingState>(*this, playerTexture));
+    codex.load("../Data_folder/entities.txt", "../Sprite/", "../Data_folder/codex.txt");
+
+    state.push_back(std::make_unique<MainMenuState>(*this));
 }
 
 void Game::run()
@@ -73,6 +76,10 @@ sf::Texture& Game::getPlayerTexture()
 {
     return playerTexture;
 }
+Codex& Game::getCodex()
+{
+    return codex;
+}
 void Game::pushState(std::unique_ptr<GameState> newState) {
     state.push_back(std::move(newState));
 }
@@ -88,3 +95,4 @@ sf::Texture& Game::getBloatedTexture() { return bloatedTex; }
 sf::Texture& Game::getSpaghettiTexture() { return spaghettiTex; }
 sf::Texture& Game::getShadowTexture() { return shadowTex; }
 sf::Texture& Game::getContraptionTexture() { return contraptionTex; }
+void Game::quit() { window.close(); }

@@ -1,18 +1,9 @@
 
 #include "../Header/Enemy.h"
 
-[[nodiscard]] bool Enemies::isUnlocked() const
-{
-    return unlocked;
-}
-void Enemies::Unlock()
-{
-    unlocked=true;
-}
 void Enemies::setTexture(const sf::Texture &texture)
 {
-    sprite.setTexture(texture);
-    // Center origin so coordinates are accurate
+    sprite.setTexture(texture, true);
     sf::FloatRect bounds = sprite.getLocalBounds();
     sprite.setOrigin({bounds.size.x / 2.f, bounds.size.y / 2.f});
 }
@@ -35,7 +26,3 @@ void Enemies::draw(sf::RenderWindow& window) const
         window.draw(sprite);
     }
 }
-Enemies::Enemies(std::string name, std::string description, std::vector<Limb> limbs)
-    : Entity(name, description, limbs)
-    , sprite(sprite)
-{}

@@ -7,19 +7,11 @@
 
 #pragma once
 #include "Entity.h"
-#include <SFML/Graphics.hpp>
 
 class Enemies : public Entity
 {
-private:
-    bool unlocked = false;
-    sf::Sprite sprite;
 public:
-    Enemies(std::string name, std::string description, std::vector<Limb> limbs);
-
-    bool isUnlocked() const;
-    void Unlock();
-
+    using Entity::Entity;
     void setTexture(const sf::Texture& texture);
     void setPosition(float x, float y);
     void hitIndicator();

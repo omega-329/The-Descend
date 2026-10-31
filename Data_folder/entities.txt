@@ -37,7 +37,7 @@ LNULL 1414 0
 LNULL 1414 0
 LNULL 1414 0
 
-Merc|He is here just for the blood my kind of guy|6
+Merc|He is here just for the blood, my kind of guy|6
 Head 30 0
 Torso 300 0
 Left_Arm 50 0
